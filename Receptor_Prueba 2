@@ -1,0 +1,53 @@
+/*
+   CÓDIGO RECEPTOR (MODO ESPEJO)
+   1. Recibe cifrado.
+   2. Desencripta.
+   3. Devuelve el mensaje limpio al Emisor.
+*/
+#include <Arduino.h>
+
+#define RXD2 14
+#define TXD2 27
+
+const String alfabeto = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const String rotor1   = "EKMFLGDQVZNTOWYHXUSPAIBRCJ"; 
+
+void setup() {
+  Serial.begin(115200);
+  Serial2.begin(9600, SERIAL_8N1, RXD2, TXD2);
+  Serial.println("Receptor listo para rebotar mensajes.");
+}
+
+void loop() {
+  if (Serial2.available()) {
+    String mensajeCifrado = Serial2.readStringUntil('\n');
+    mensajeCifrado.trim();
+    
+    if (mensajeCifrado.length() > 0) {
+      // 1. Desencriptar
+      String mensajeClaro = desencriptarMensaje(mensajeCifrado);
+      
+      // 2. Mostrar en monitor serial (solo para debug)
+      Serial.print("Recibido: "); Serial.println(mensajeCifrado);
+      Serial.print("Devolviendo: "); Serial.println(mensajeClaro);
+      
+      // 3. ¡DEVOLVER AL EMISOR!
+      // Agregamos una etiqueta para saber que viene del receptor
+      Serial2.println("RETORNO:" + mensajeClaro);
+    }
+  }
+}
+
+String desencriptarMensaje(String texto) {
+  String resultado = "";
+  for (int i = 0; i < texto.length(); i++) {
+    char letra = texto[i];
+    int indice = rotor1.indexOf(letra);
+    if (indice != -1) {
+      resultado += alfabeto[indice];
+    } else {
+      resultado += letra;
+    }
+  }
+  return resultado;
+}
