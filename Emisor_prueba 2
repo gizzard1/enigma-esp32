@@ -1,0 +1,81 @@
+/*
+   CÓDIGO EMISOR (MAESTRO BLUETOOTH)
+   1. Recibe de tu celular.
+   2. Manda al Receptor.
+   3. Espera la respuesta del Receptor y te la muestra.
+*/
+#include <Arduino.h>
+#include "BluetoothSerial.h"
+
+#define RXD2 27
+#define TXD2 14
+
+BluetoothSerial SerialBT;
+
+const String alfabeto = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const String rotor1   = "EKMFLGDQVZNTOWYHXUSPAIBRCJ"; 
+
+void setup() {
+  Serial.begin(115200);
+  
+  // Nombre del Bluetooth
+  SerialBT.begin("MAQUINA_ENIGMA"); 
+  
+  Serial2.begin(9600, SERIAL_8N1, RXD2, TXD2);
+  
+  Serial.println("Listo. Conectate a 'MAQUINA_ENIGMA'");
+}
+
+void loop() {
+  // --- PARTE 1: ENVIAR (Celular -> ESP32 -> Receptor) ---
+  if (SerialBT.available()) {
+    String mensaje = SerialBT.readStringUntil('\n');
+    mensaje.trim();
+    
+    if (mensaje.length() > 0) {
+      String cifrado = encriptarMensaje(mensaje);
+      
+      SerialBT.print("Tú escribiste: ");
+      SerialBT.println(mensaje);
+      SerialBT.print("Enviando Cifrado: ");
+      SerialBT.println(cifrado);
+      SerialBT.println("... Esperando respuesta del Receptor ...");
+      
+      // Enviamos por cable
+      Serial2.println(cifrado);
+    }
+  }
+
+  // --- PARTE 2: RECIBIR (Receptor -> ESP32 -> Celular) ---
+  if (Serial2.available()) {
+    String respuesta = Serial2.readStringUntil('\n');
+    respuesta.trim();
+    
+    // Si la respuesta empieza con "RETORNO:", es del receptor
+    if (respuesta.startsWith("RETORNO:")) {
+        // Quitamos la etiqueta "RETORNO:" para mostrarlo limpio
+        String mensajeFinal = respuesta.substring(8); 
+        
+        SerialBT.println("-----------------------------");
+        SerialBT.println("¡RESPUESTA RECIBIDA!");
+        SerialBT.print("El Receptor decodificó: ");
+        SerialBT.println(mensajeFinal);
+        SerialBT.println("-----------------------------");
+    }
+  }
+}
+
+String encriptarMensaje(String texto) {
+  String resultado = "";
+  texto.toUpperCase();
+  for (int i = 0; i < texto.length(); i++) {
+    char letra = texto[i];
+    int indice = alfabeto.indexOf(letra);
+    if (indice != -1) {
+      resultado += rotor1[indice];
+    } else {
+      resultado += letra;
+    }
+  }
+  return resultado;
+}
