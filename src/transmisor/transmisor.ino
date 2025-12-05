@@ -14,13 +14,13 @@
 // !!! CONFIGURACIÓN WI-FI Y TELEGRAM !!!
 // =========================================================
 // Reemplaza con tu Bot Token real de Telegram
-#define BOT_TOKEN "8000235735:AAE6qeavQzxI-TtJ6QMh436hXNFATVXakeM" // <--- REEMPLAZAR
+#define BOT_TOKEN "BOT_TOKEN" // <--- REEMPLAZAR
 // Reemplaza con tu Chat ID real de Telegram
-#define CHAT_ID "-5039363986" // <--- REEMPLAZAR
+#define CHAT_ID "CHAT_ID" // <--- REEMPLAZAR
 // Reemplaza con el nombre de tu red Wi-Fi
-#define WIFI_SSID "MEGACABLE-2.4G-0FA3" // <--- REEMPLAZAR
+#define WIFI_SSID "SSID_NAME" // <--- REEMPLAZAR
 // Reemplaza con la contraseña de tu red Wi-Fi
-#define WIFI_PASS "6JSq8WPHYX" // <--- REEMPLAZAR
+#define WIFI_PASS "PASS_WIFI" // <--- REEMPLAZAR
 
 // =========================================================
 //  LÓGICA ENIGMA
