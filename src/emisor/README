@@ -1,0 +1,26 @@
+# Enigma Machine - Emisor (emisor.ino)
+
+Este código se encarga de la interfaz de usuario. Captura el mensaje a cifrar, permite configurar los rotores y envía los datos procesados al segundo ESP32.
+
+##Descripción del Archivo
+**Archivo:** `emisor.ino`
+**Función:** Cliente / Interfaz de Entrada / Cifrador Local
+
+## Funcionalidades
+- [cite_start]**Entrada de Datos:** Lee mensajes y configuración desde el Monitor Serial[cite: 85, 90].
+- [cite_start]**Configuración de Rotores:** Permite seleccionar entre 3 y 5 rotores (I, II, III, IV, V)[cite: 91, 95].
+- [cite_start]**Cifrado Local:** Muestra una previsualización del cifrado en consola[cite: 100].
+- [cite_start]**Envío Serial:** Empaqueta la información en JSON y la envía por el puerto Serial2[cite: 105].
+
+## 🛠 Hardware y Conexiones (ESP32 A)
+
+| Pin ESP32 | Función | Conexión |
+| :--- | :--- | :--- |
+| **GND** | Tierra | Al GND del otro ESP32 |
+| **GPIO 14** | TX (Transmisión) | [cite_start]Al pin RX (27) del `transmisor.ino` [cite: 56] |
+| **GPIO 27** | RX (Recepción) | [cite_start]Al pin TX (14) del `transmisor.ino` [cite: 56] |
+
+##Uso
+1. Carga `emisor.ino` en tu primer ESP32.
+2. Abre el Monitor Serial a **115200 baudios**.
+3. Sigue los pasos para ingresar texto y seleccionar rotores.
