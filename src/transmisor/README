@@ -1,0 +1,31 @@
+# Enigma Machine - Transmisor Telegram (transmisor.ino)
+
+Este código actúa como el nodo receptor del cable serial y pasarela (gateway) hacia Internet. Recibe el mensaje cifrado, lo descifra y lo transmite a un bot de Telegram.
+
+## Descripción del Archivo
+**Archivo:** `transmisor.ino`
+**Función:** Receptor Serial / Descifrador / Cliente Telegram
+
+## Funcionalidades
+- [cite_start]**Recepción UART:** Escucha datos JSON entrantes por el puerto Serial2[cite: 48].
+- [cite_start]**Lógica Enigma Inversa:** Descifra el mensaje utilizando la configuración recibida en el JSON[cite: 51, 52].
+- [cite_start]**Conectividad:** Se conecta a WiFi y sincroniza la hora NTP[cite: 31, 34].
+- [cite_start]**Notificación:** Envía el resultado (Cifrado y Descifrado) a Telegram[cite: 37, 54].
+
+## 🛠 Hardware y Conexiones (ESP32 B)
+
+| Pin ESP32 | Función | Conexión |
+| :--- | :--- | :--- |
+| **GND** | Tierra | Al GND del `emisor.ino` |
+| **GPIO 27** | RX (Recepción) | [cite_start]Al pin TX (14) del `emisor.ino` [cite: 2] |
+| **GPIO 14** | TX (Transmisión) | [cite_start]Al pin RX (27) del `emisor.ino` [cite: 2] |
+
+##Configuración (Editar antes de cargar)
+
+[cite_start]Debes modificar las siguientes líneas al inicio de `transmisor.ino`[cite: 3]:
+
+```cpp
+#define BOT_TOKEN "TU_BOT_TOKEN"      // Token de tu Bot de Telegram
+#define CHAT_ID "TU_CHAT_ID"          // ID de tu chat
+#define WIFI_SSID "TU_RED_WIFI"       // Nombre de la red
+#define WIFI_PASS "TU_CONTRASEÑA"     // Contraseña de la red
